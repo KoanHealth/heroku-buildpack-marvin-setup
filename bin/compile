@@ -8,23 +8,22 @@ require "language_pack"
 require "language_pack/shell_helpers"
 DEPLOY_PATH='./deploy'
 
-puts ARGV[0]
-puts ARGV[1]
-puts ARGV[2]
-puts ARGV[3]
-
+build_path = ARGV[0]
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
   puts 'installing Bundler'
   LanguagePack::Helpers::BundlerWrapper.new.install
-  puts "Working in: #{Dir.pwd}"
 
-  puts 'cloning deploy repo'
-  `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
-  puts 'Compile dir files:'
+  Dir.chdir(build_path) do
+    puts "Working in: #{Dir.pwd}"
 
-  Dir.chdir(DEPLOY_PATH) do
-    puts 'Running deploy setup'
-    `script/setup.sh`
+    puts 'cloning deploy repo'
+    `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
+    puts 'Compile dir files:'
+
+    Dir.chdir(DEPLOY_PATH) do
+      puts 'Running deploy setup'
+      `script/setup.sh`
+    end
   end
 end
