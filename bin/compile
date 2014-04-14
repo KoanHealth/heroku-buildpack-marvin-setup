@@ -10,12 +10,12 @@ DEPLOY_PATH='./deploy'
 
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
-  echo 'installing Bundler'
+  puts 'installing Bundler'
   LanguagePack::Helpers::BundlerWrapper.new.install
-  echo 'cloning deploy repo'
+  puts 'cloning deploy repo'
   `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
   Dir.chdir(DEPLOY_PATH) do
-  echo 'Running deploy setup'
+  puts 'Running deploy setup'
   `script/setup`
   end
 end
