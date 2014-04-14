@@ -22,9 +22,11 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
     `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
     puts 'Compile dir files:'
 
-    ENV['PATH'] = "#{ENV['PATH']}:#{bundle_master.bundler_path}"
+    bundle_exec_path = "#{bundle_master.bundler_path}/bin"
+
+    ENV['PATH'] = "#{ENV['PATH']}:#{bundle_exec_path}"
     puts 'Bundler path'
-    Dir.foreach(bundle_master.bundler_path) {|file| puts file}
+    Dir.foreach(bundle_exec_path) {|file| puts file}
     Dir.chdir(DEPLOY_PATH) do
       puts 'Running deploy setup'
       `script/setup.sh`
