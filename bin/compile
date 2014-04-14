@@ -27,6 +27,6 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
       puts file_name
     end
     puts 'Running deploy setup'
-    `script/setup`
+    `#{Dir.getwd}/script/setup`
   end
 end
