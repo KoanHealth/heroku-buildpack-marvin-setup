@@ -17,6 +17,8 @@ puts ARGV[3]
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
   puts 'installing Bundler'
   LanguagePack::Helpers::BundlerWrapper.new.install
+  puts "Working in: #{Dir.pwd}"
+
   puts 'cloning deploy repo'
   `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
   puts 'Compile dir files:'
