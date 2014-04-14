@@ -12,7 +12,8 @@ build_path = ARGV[0]
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
   puts 'installing Bundler'
-  LanguagePack::Helpers::BundlerWrapper.new.install
+  bundle_master = LanguagePack::Helpers::BundlerWrapper.new
+  bundle_master.install
 
   Dir.chdir(build_path) do
     puts "Working in: #{Dir.pwd}"
@@ -21,9 +22,9 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
     `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
     puts 'Compile dir files:'
 
-    ENV['PATH'] = "#{ENV['PATH']}:#{LanguagePack::Helpers::BundlerWrapper::BUNDLER_PATH}"
+    ENV['PATH'] = "#{ENV['PATH']}:#{bundle_master.bundler_path}"
     puts 'Bundler path'
-    Dir.foreach(LanguagePack::Helpers::BundlerWrapper::BUNDLER_PATH) {|file| puts file}
+    Dir.foreach(bundle_master.bundler_path) {|file| puts file}
     Dir.chdir(DEPLOY_PATH) do
       puts 'Running deploy setup'
       `script/setup.sh`
