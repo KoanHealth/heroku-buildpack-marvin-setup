@@ -8,6 +8,11 @@ require "language_pack"
 require "language_pack/shell_helpers"
 DEPLOY_PATH='./deploy'
 
+puts $0
+puts $1
+puts $2
+puts $3
+
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
   puts 'installing Bundler'
