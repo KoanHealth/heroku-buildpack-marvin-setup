@@ -15,18 +15,9 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
   puts 'cloning deploy repo'
   `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
   puts 'Compile dir files:'
-  puts "Files:"
-  Dir.foreach(Dir.getwd) do |file_name|
-    puts file_name
-  end
 
   Dir.chdir(DEPLOY_PATH) do
-    puts "In #{Dir.pwd}"
-    puts "Deploy Files:"
-    Dir.foreach(Dir.getwd) do |file_name|
-      puts file_name
-    end
     puts 'Running deploy setup'
-    `#{Dir.getwd}/script/setup`
+    `script/setup.sh`
   end
 end
