@@ -8,10 +8,10 @@ require "language_pack"
 require "language_pack/shell_helpers"
 DEPLOY_PATH='./deploy'
 
-puts $0
-puts $1
-puts $2
-puts $3
+puts ARGV[0]
+puts ARGV[1]
+puts ARGV[2]
+puts ARGV[3]
 
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
