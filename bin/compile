@@ -21,6 +21,7 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
     `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
     puts 'Compile dir files:'
 
+    ENV['PATH'] = "#{ENV['PATH']}:#{LanguagePack::Helpers::BundlerWrapper::BUNDLER_PATH}/bin"
     Dir.chdir(DEPLOY_PATH) do
       puts 'Running deploy setup'
       `script/setup.sh`
