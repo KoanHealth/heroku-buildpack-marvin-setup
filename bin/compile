@@ -6,13 +6,16 @@ $stdout.sync = true
 $:.unshift File.expand_path("../../lib", __FILE__)
 require "language_pack"
 require "language_pack/shell_helpers"
+DEPLOY_PATH='./deploy'
+
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
-  if pack = LanguagePack.detect(ARGV[0], ARGV[1])
-    LanguagePack::ShellHelpers.initialize_env(ARGV[2])
-    pack.topic("Compiling #{pack.name}")
-    pack.log("compile") do
-      pack.compile
-    end
+  echo 'installing Bundler'
+  LanguagePack::Helpers::BundlerWrapper.new.install
+  echo 'cloning deploy repo'
+  `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
+  Dir.chdir(DEPLOY_PATH) do
+  echo 'Running deploy setup'
+  `script/setup`
   end
 end
