@@ -6,30 +6,29 @@ $stdout.sync = true
 $:.unshift File.expand_path("../../lib", __FILE__)
 require "language_pack"
 require "language_pack/shell_helpers"
-DEPLOY_PATH='./deploy'
+DEPLOY_PATH='deploy'
 
 build_path = ARGV[0]
+deploy_build_path = File.join(build_path, DEPLOY_PATH)
 
 LanguagePack::Instrument.trace 'compile', 'app.compile' do
-  puts 'installing Bundler'
-  bundle_master = LanguagePack::Helpers::BundlerWrapper.new
-  bundle_master.install
-
   Dir.chdir(build_path) do
-    puts "Working in: #{Dir.pwd}"
-
-    puts 'cloning deploy repo'
+    puts 'cloning deploy sub-repo'
     `git clone git@github.com:KoanHealth/Deploy.git #{DEPLOY_PATH}`
-    puts 'Compile dir files:'
+  end
 
-    bundle_exec_path = "#{bundle_master.bundler_path}/bin"
+  puts 'installing Ruby LanguagePack @ deploy sub-repo' 
 
-    ENV['PATH'] = "#{ENV['PATH']}:#{bundle_exec_path}"
-    puts 'Bundler path'
-    Dir.foreach(bundle_exec_path) {|file| puts file}
-    Dir.chdir(DEPLOY_PATH) do
-      puts 'Running deploy setup'
-      `script/setup.sh`
-    end
+  pack = LanguagePack::Ruby.new(deploy_build_path, File.join(ARGV[1], DEPLOY_PATH))
+  LanguagePack::ShellHelpers.initialize_env(ARGV[2])
+
+  pack.topic("Compiling #{pack.name} Deploy sub-repo")
+  pack.log("compile") do
+    pack.compile
+  end
+
+  Dir.chdir(deploy_build_path) do
+    puts 'Running deploy setup'
+    `script/setup.sh`
   end
 end
