@@ -28,7 +28,7 @@ LanguagePack::Instrument.trace 'compile', 'app.compile' do
     pack.compile
   end
 
-  FileUtils.cp File.join(File.dirname(__FILE__),'deploy_profile'), File.join(build_path, '.profile.d')
+  FileUtils.cp File.join(File.dirname(__FILE__),'deploy_profile.sh'), File.join(build_path, '.profile.d')
 
   Dir.chdir(deploy_build_path) do
     puts 'Running deploy setup'
