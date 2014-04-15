@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# sync output
+$stdout.sync = true
+
+# Runs the profile files for the 'buildpack' located at the deploy position
+home = ENV['HOME']
+begin
+  ENV['HOME'] = File.join(home, 'deploy')
+  Dir.foreach(File.join(ENV['HOME'], '.profile.d', '*')) { |file| `#{file}` }
+ensure
+  ENV['HOME'] = home
+end
