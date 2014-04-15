@@ -7,7 +7,9 @@ $stdout.sync = true
 home = ENV['HOME']
 begin
   ENV['HOME'] = File.join(home, 'deploy')
-  Dir.foreach(File.join(ENV['HOME'], '.profile.d', '*')) { |file| `#{file}` }
+  Dir.glob(File.join(ENV['HOME'], '.profile.d', '*')) do |file| 
+    `#{file}` if File.file?(file)
+  end
 ensure
   ENV['HOME'] = home
 end
